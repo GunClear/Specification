@@ -51,6 +51,7 @@ hash(s_S, A_R, T, W)
 * Sender Account View Hash (bytes32 hash)
 * Receiver Account View Hash (bytes32 hash)
 * Previous Transaction Hash
+* Current Transaction Hash
 
 ### Private Parameters
 * Sender Private Key (uint252 plain)
@@ -59,6 +60,7 @@ hash(s_S, A_R, T, W)
 * Receiver Account View Randomizer (uint128 plain)
 * Firearm Serial Number (bytes16 hash)
 * Firearm View Randomizer (uint128 plain, j) - shared with Receiver
+* Signature of Sender of Previous Transaction Hash
 
 ## Transaction Structure
 * Firearm Spend Commitment
