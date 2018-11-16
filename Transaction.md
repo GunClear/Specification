@@ -26,6 +26,11 @@ hash(serial number + firearm view randomizer)
 j*rho_old
 ```
 
+### Transaction Hash
+```
+hash(s_S, A_R, T, W)
+```
+
 ## Authorization Proof
 
 ### Public Parameters
@@ -45,6 +50,7 @@ j*rho_old
 * Token UID (bytes32 hash)
 * Sender Account View Hash (bytes32 hash)
 * Receiver Account View Hash (bytes32 hash)
+* Previous Transaction Hash
 
 ### Private Parameters
 * Sender Private Key (uint252 plain)
