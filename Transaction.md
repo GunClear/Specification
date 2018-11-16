@@ -15,6 +15,17 @@ This hash is computed as follows:
 hash(public key + root hash + view randomizer)
 ```
 
+### Token Unique Identifier
+"Firearm View Randomizer" (random j) - randomly generated number shared between all owners of the firearm
+```
+hash(serial number + firearm view randomizer)
+```
+
+### Transaction Spend Nullifier
+```
+j*rho_old
+```
+
 ## Authorization Proof
 
 ### Public Parameters
@@ -32,8 +43,6 @@ hash(public key + root hash + view randomizer)
 ### Public Parameters
 * Authorization Root Hash (bytes32 hash)
 * Token UID (bytes32 hash)
-* Firearm Spend Nullifier
-* Firearm Receive Commitment
 * Sender Account View Hash (bytes32 hash)
 * Receiver Account View Hash (bytes32 hash)
 
@@ -43,9 +52,7 @@ hash(public key + root hash + view randomizer)
 * Receiver Account Address (bytes20 hash)
 * Receiver Account View Randomizer (uint128 plain)
 * Firearm Serial Number (bytes16 hash)
-* Firearm View Randomizer (uint128 plain) - shared with
-* Firearm Spend Key (uint128 plain) - rho_1
-* Firearm Receive Key (uint128 plain) - rho_2
+* Firearm View Randomizer (uint128 plain, j) - shared with Receiver
 
 ## Transaction Structure
 * Firearm Spend Commitment
