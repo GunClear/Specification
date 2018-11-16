@@ -31,7 +31,7 @@ j*rho_old
 hash(s_S, A_R, T, W)
 ```
 
-## Authorization Proof
+## Authorization Proof (Both Parties Generate)
 
 ### Public Parameters
 * Authorization Root Hash (bytes32 hash)
@@ -43,24 +43,73 @@ hash(s_S, A_R, T, W)
 * Authorization Merkle Path (160x bytes32 hash)
 * Account View Randomizer (uint128 plain)
 
-## Transaction Spend Proof
+## Transaction Receive Proof (Receiver Generates)
 
 ### Public Parameters
 * Authorization Root Hash (bytes32 hash)
 * Token UID (bytes32 hash)
 * Sender Account View Hash (bytes32 hash)
 * Receiver Account View Hash (bytes32 hash)
-* Previous Transaction Hash
-* Current Transaction Hash
+* Current Transaction Hash (bytes32 hash)
+
+### Private Parameters
+* Receiver Private Key (uint252 plain)
+* Receiver Account View Randomizer (uint128 plain)
+* Sender Account Address (bytes20 hash)
+* Sender Account View Randomizer (uint128 plain)
+* Firearm Serial Number (bytes16 hash)
+* Firearm View Randomizer (uint128 plain)
+
+## Transaction Send Proof (Sender Generates)
+
+### Public Parameters
+* Current Authorization Root Hash (bytes32 hash)
+* Token UID (bytes32 hash)
+* Sender Account View Hash (bytes32 hash)
+* Receiver Account View Hash (bytes32 hash)
+* Previous Transaction Hash (bytes32 hash)
 
 ### Private Parameters
 * Sender Private Key (uint252 plain)
 * Sender Account View Randomizer (uint128 plain)
-* Receiver Account Address (bytes20 hash)
 * Receiver Account View Randomizer (uint128 plain)
-* Firearm Serial Number (bytes16 hash)
-* Firearm View Randomizer (uint128 plain, j) - shared with Receiver
-* Signature of Sender of Previous Transaction Hash
+* Previous Sender Account Address (bytes20 hash)
+* Previous Authorization Root Hash (bytes32 hash)
 
-## Transaction Structure
-* Firearm Spend Commitment
+## Transaction Setup
+In setting up a transaction, the sender must share the following with the receiver:
+* Sender Account Address (bytes20 hash)
+* Sender Account View Hash (bytes32 hash)
+* Sender Account View Randomizer (uint128 plain)
+* Firearm Serial Number (bytes16 hash)
+* Firearm View Randomizer (uint128 plain)
+
+The sender should share the following with the receiver (not strictly required):
+* Sender Account Status (uint2 plain)
+* Sender Authorization Proof
+
+The receiver must share the following with the sender:
+* Receiver Account Address (bytes20 hash)
+* Receiver Account View Hash (bytes32 hash)
+* Receiver Account View Randomizer (uint128 plain)
+* Receiver Authorization Proof
+
+## Network Format
+### Provided with Transaction
+This is the structure of the transaction communicated over the network:
+* Token UID (bytes32 hash)
+* Current Transaction Hash (bytes32 hash)
+* Sender Account View Hash (bytes32 hash)
+* Receiver Account View Hash (bytes32 hash)
+* Sender Account Status (uint2 plain)
+* Receiver Account Status (uint2 plain)
+* Sender Authorization Proof
+* Receiver Authorization Proof
+* Transaction Receive Proof
+* Transaction Send Proof
+
+### Known Environment Parameters
+The network operators and all other parties will know the following information,
+given the information provided along with a transaction:
+* Previous Transaction Hash (bytes32 hash)
+* Current Authorization Root Hash (bytes32 hash)
