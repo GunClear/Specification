@@ -168,6 +168,7 @@ The receiver must share the following with the sender:
 * Receiver Account View Randomizer (`r_R`)
 * Receiver Account Status (`N_R`)
 * Receiver Authorization Proof Witness
+* Transaction Receive Proof Witness
 
 ## Network Format
 ### Provided with Transaction
