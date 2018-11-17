@@ -1,4 +1,4 @@
-# Gunero Transaction Structure
+# Gunero Transaction and Proof Structures
 
 ## Definitions
 
@@ -151,39 +151,39 @@ unauthorized release of the token to a party not covered in the transaction.
 ---
 
 ## Transaction Setup
-In setting up a transaction, the sender must share the following with the receiver:
-* Sender Account Address (bytes20 hash)
-* Sender Account View Hash (bytes32 hash)
-* Sender Account View Randomizer (uint128 plain)
-* Firearm Serial Number (bytes16 hash)
-* Firearm View Randomizer (uint128 plain)
+In setting up a transaction, the sender must share the following with the receiver via secret communication:
+* Sender Account Address (`A_S`)
+* Sender Account View Hash (`V_S`)
+* Sender Account View Randomizer (`r_S`)
+* Firearm Serial Number (`F`)
+* Firearm View Randomizer (`j`)
 
 The sender should share the following with the receiver (not strictly required):
-* Sender Account Status (uint2 plain)
-* Sender Authorization Proof
+* Sender Account Status (`N_S`)
+* Sender Authorization Proof Witness
 
 The receiver must share the following with the sender:
-* Receiver Account Address (bytes20 hash)
-* Receiver Account View Hash (bytes32 hash)
-* Receiver Account View Randomizer (uint128 plain)
-* Receiver Authorization Proof
+* Receiver Account Address (`A_R`)
+* Receiver Account View Hash (`V_R`)
+* Receiver Account View Randomizer (`r_R`)
+* Receiver Authorization Proof Witness
 
 ## Network Format
 ### Provided with Transaction
 This is the structure of the transaction communicated over the network:
-* Token UID (bytes32 hash)
-* Current Transaction Hash (bytes32 hash)
-* Sender Account View Hash (bytes32 hash)
-* Receiver Account View Hash (bytes32 hash)
-* Sender Account Status (uint2 plain)
-* Receiver Account Status (uint2 plain)
-* Sender Authorization Proof
-* Receiver Authorization Proof
-* Transaction Receive Proof
-* Transaction Send Proof
+* Token UID (`T`)
+* Current Transaction Hash (`txn`)
+* Sender Account View Hash (`V_S`)
+* Receiver Account View Hash (`V_R`)
+* Sender Account Status (`N_S`)
+* Receiver Account Status (`N_R`)
+* Sender Authorization Proof Witness
+* Receiver Authorization Proof Witness
+* Transaction Receive Proof Witness
+* Transaction Send Proof Witness
 
 ### Known Environment Parameters
 The network operators and all other parties will know the following information,
 given the information provided along with a transaction:
-* Previous Transaction Hash (bytes32 hash)
-* Current Authorization Root Hash (bytes32 hash)
+* Previous Transaction Hash (`txn_P`)
+* Current Authorization Root Hash (`W`)
