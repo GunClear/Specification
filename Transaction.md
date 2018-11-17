@@ -15,7 +15,17 @@ The "Authorization Root Hash" is the root hash of the sparse merkle tree data st
 the authorization status of accounts in the system. The key used for obtaining this root hash is the
 Ethereum account address `A_account`, and the status is at the leaf.
 
-Represented as: `W` (`W_P` used for "previous auth root hash")
+Represented as: `W` (`W_P` used for "previous auth root hash") and `N_account` (status of account)
+
+### Authorization Merkle Path
+The root hash of a merkle tree can be used to generate proofs of inclusion. This is done by providing
+a list of sibling nodes that traverse up the tree. The proof starts at the leaf, which is first hashed
+into the starting node, and then hashes are recursively computed from that hash and the sibling at level
+`i` of the tree until it reaches the root (at level 0). The order that the data is hashed in is determined
+by the path, which is a list of boolean orderings obtained from the key of the data structure (every `i`-th
+bit in the integer). If the final hash matches a given root hash `W`, we know the data is consistent.
+
+Represented as: `M_account[i]` (`[i]` denotes an array of length `i`)
 
 ### Account View Hash and Randomizer
 In order to tie the authorization proof (which is generated once per Plasma cycle),
@@ -65,14 +75,19 @@ txn = hash(A_S + s_R + T + W)
 ## Authorization Proof (Both Parties Generate)
 
 ### Public Parameters
-* Authorization Root Hash (bytes32 hash)
-* Account Status (uint2 plain)
-* Account View Hash (bytes32 hash)
+* Authorization Root Hash (`W`)
+* Account Status (`N_account`)
+* Account View Hash (`V_account`)
 
 ### Private Parameters
-* Account Secret Key (uint252 plain)
-* Authorization Merkle Path (160x bytes32 hash)
-* Account View Randomizer (uint128 plain)
+* Account Secret Key (`s_account`)
+* Authorization Merkle Path (`M_account[160]`)
+* Account View Randomizer (`r_account`)
+
+### Proof Steps
+1. Obtain `A_account` from `s_account` through EDCSA operations.
+2. Validate `W == calc_root(A_account, N_account, M_account[160])`
+3. Validate `V_account == hash(A_account + W + r_account)`
 
 ## Transaction Receive Proof (Receiver Generates)
 
