@@ -166,6 +166,7 @@ The receiver must share the following with the sender:
 * Receiver Account Address (`A_R`)
 * Receiver Account View Hash (`V_R`)
 * Receiver Account View Randomizer (`r_R`)
+* Receiver Account Status (`N_R`)
 * Receiver Authorization Proof Witness
 
 ## Network Format
