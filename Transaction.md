@@ -193,20 +193,18 @@ In setting up a transaction, the sender must share the following with the receiv
 * Sender Account Address (`A_S`)
 * Sender Account View Hash (`V_S`)
 * Sender Account View Randomizer (`r_S`)
+* Sender Account Status (`N_S`)
+* Sender Authorization Proof
 * Firearm Serial Number (`F`)
 * Firearm View Randomizer (`j`)
-
-The sender should share the following with the receiver (not strictly required):
-* Sender Account Status (`N_S`)
-* Sender Authorization Proof Witness
 
 The receiver must share the following with the sender:
 * Receiver Account Address (`A_R`)
 * Receiver Account View Hash (`V_R`)
 * Receiver Account View Randomizer (`r_R`)
 * Receiver Account Status (`N_R`)
-* Receiver Authorization Proof Witness
-* Transaction Receive Proof Witness
+* Receiver Authorization Proof
+* Transaction Receive Proof
 
 ### Network Format
 
@@ -218,13 +216,41 @@ This is the structure of the transaction communicated over the network:
 * Receiver Account View Hash (`V_R`)
 * Sender Account Status (`N_S`)
 * Receiver Account Status (`N_R`)
-* Sender Authorization Proof Witness
-* Receiver Authorization Proof Witness
-* Transaction Receive Proof Witness
-* Transaction Send Proof Witness
+* Sender Authorization Proof
+* Receiver Authorization Proof
+* Transaction Receive Proof
+* Transaction Send Proof
 
 #### Known Environment Parameters
 The network operators and all other parties will know the following information,
 given the information provided along with a transaction:
 * Previous Transaction Hash (`txn_P`)
 * Current Authorization Root Hash (`W`)
+
+---
+
+## Transaction Process
+This is an overview of how the transaction would work in practice between the two parties.
+
+The steps are:
+1. Sender provides setup data to Receiver over secret channel
+2. Receiver verifies firearm details (serial number) are consistent with shared data
+3. Receiver validates Sender's authorization proof
+4. Receiver generates receivership proof (wait...)
+5. Receiver provides setup data and receivership proof to Sender over secret channel
+6. Sender validates Receiver's authorization proof
+7. Sender validates Reciever's receivership proof
+8. Sender generates ownership transfer proof (wait...)
+9. Sender broadcasts transaction data over network
+10. Sender and Receiver wait for txn hash (leaf of state tree) to be update for token id
+
+The transaction is considered "accepted" at this point in that it cannot be reverted
+assuming that the network operators do their jobs and properly synchronize the transaction
+to the root chain by uploading the state root hash during the Plasma synchronization.
+Clients should cache all transaction data and validate that synchronization updates when
+the operator publishes, and be prepared to challenge them if the data does not match expectations.
+
+After several Plasma synchronization cycles corresponding to a review checkpoint, the transaction
+is considered "finalized" as the state root cannot be reverted. This process may take a month or more,
+so it is important to validate the network state at least once per checkpoint after a transaction has
+occured, to ensure that the operators are acting reliably and consistently with the state of the network.
