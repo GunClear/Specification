@@ -106,12 +106,14 @@ All clients will reject transitions of the following nature, which may require s
 
 ---
 
-## Proofs
+## Transaction Proofs
 
 ### Authorization Proof (Both Parties Generate)
 With this proof, we are trying to show that the owner of the a private key is on the publicly
 available authorization list, without revealing their identity by leaking their public key.
 The "account view hash" validates that this proof is consistent with the others generated.
+This proof is expensive as there are 160+ hash operations, but it only has to be re-computed
+once per Plasma Cycle.
 
 #### Public Parameters
 * Authorization Root Hash (`W`)
