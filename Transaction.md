@@ -106,39 +106,41 @@ All clients will reject transitions of the following nature, which may require s
 
 ---
 
-## Authorization Proof (Both Parties Generate)
+## Proofs
+
+### Authorization Proof (Both Parties Generate)
 With this proof, we are trying to show that the owner of the a private key is on the publicly
 available authorization list, without revealing their identity by leaking their public key.
 The "account view hash" validates that this proof is consistent with the others generated.
 
-### Public Parameters
+#### Public Parameters
 * Authorization Root Hash (`W`)
 * Account Status (`N_account`)
 * Account View Hash (`V_account`)
 
-### Private Parameters
+#### Private Parameters
 * Account Secret Key (`s_account`)
 * Authorization Merkle Path (`M_account[160]`)
 * Account View Randomizer (`r_account`)
 
-### Proof Steps
+#### Proof Steps
 1. Obtain `A_account` from `s_account` through EDCSA operations
 2. Validate `W == calc_root(A_account, N_account, M_account[160])` (User is authorized)
 3. Validate `V_account == hash(A_account + W + r_account)` (View Hash is consistent)
 
-## Transaction Receive Proof (Receiver Generates)
+### Transaction Receive Proof (Receiver Generates)
 With this proof, we are validating that the receiver of the token has received all pertitent
 information about the firearm, and also that this transaction was not forged on their behalf.
 The "account view hash" validates that this proof is consistent with the others generated.
 
-### Public Parameters
+#### Public Parameters
 * Authorization Root Hash (`W`)
 * Token UID (`T`)
 * Sender Account View Hash (`V_S`)
 * Receiver Account View Hash (`V_R`)
 * Current Transaction Hash (`txn`)
 
-### Private Parameters
+#### Private Parameters
 * Receiver Private Key (`s_R`)
 * Receiver Account View Randomizer (`r_R`)
 * Sender Account Address (`A_S`)
@@ -146,35 +148,35 @@ The "account view hash" validates that this proof is consistent with the others 
 * Firearm Serial Number (`F`)
 * Firearm View Randomizer (`j`)
 
-### Proof Steps
+#### Proof Steps
 1. Obtain `A_R` from `s_R` through EDCSA operations
 2. Validate `V_S == hash(A_S + W + r_S)` (View Hash is consistent for Sender)
 3. Validate `V_R == hash(A_R + W + r_R)` (View Hash is consistent for Receiver)
 4. Validate `T == hash(F + j)` (Both parties know the serial number)
 5. Validate `txn == hash(A_S + s_R + T + W)` (The send proof is consistent, not forged)
 
-## Transaction Send Proof (Sender Generates)
+### Transaction Send Proof (Sender Generates)
 With this proof, we are validating that the sender of the token is accepting that this
 token's ownership should be transferred to the new transaction hash given.
 The "account view hash" validates that this proof is consistent with the others generated,
 and also serves as an additional precaution for others using this proof to validate an
 unauthorized release of the token to a party not covered in the transaction.
 
-### Public Parameters
+#### Public Parameters
 * Current Authorization Root Hash (`W`)
 * Token UID (`T`)
 * Sender Account View Hash (`V_S`)
 * Receiver Account View Hash (`V_R`)
 * Previous Transaction Hash (`txn_P`)
 
-### Private Parameters
+#### Private Parameters
 * Sender Private Key (`s_S`)
 * Sender Account View Randomizer (`r_S`)
 * Receiver Account View Randomizer (`r_R`)
 * Previous Sender Account Address (`A_PS`)
 * Previous Authorization Root Hash (`W_P`)
 
-### Proof Steps
+#### Proof Steps
 1. Obtain `A_S` from `s_S` through EDCSA operations
 2. Validate `V_S == hash(A_S + W + r_S)` (View Hash is consistent for Sender)
 3. Validate `V_R == hash(A_R + W + r_R)` (View Hash is consistent for Receiver)
@@ -182,7 +184,9 @@ unauthorized release of the token to a party not covered in the transaction.
 
 ---
 
-## Transaction Setup
+## Transaction Data Sharing
+
+### Setup
 In setting up a transaction, the sender must share the following with the receiver via secret communication:
 * Sender Account Address (`A_S`)
 * Sender Account View Hash (`V_S`)
@@ -202,8 +206,9 @@ The receiver must share the following with the sender:
 * Receiver Authorization Proof Witness
 * Transaction Receive Proof Witness
 
-## Network Format
-### Provided with Transaction
+### Network Format
+
+#### Provided with Transaction
 This is the structure of the transaction communicated over the network:
 * Token UID (`T`)
 * Current Transaction Hash (`txn`)
@@ -216,7 +221,7 @@ This is the structure of the transaction communicated over the network:
 * Transaction Receive Proof Witness
 * Transaction Send Proof Witness
 
-### Known Environment Parameters
+#### Known Environment Parameters
 The network operators and all other parties will know the following information,
 given the information provided along with a transaction:
 * Previous Transaction Hash (`txn_P`)
