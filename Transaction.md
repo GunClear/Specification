@@ -1,5 +1,9 @@
 # Gunero Transaction and Proof Structures
 
+The transactions on the Gunero network are a complex, multi-step process. The following
+lays out in clear terms the technical underpinnings of how they operate in order to maintain
+the privacy and security guarentees that GunClear's membership demands.
+
 ## Definitions
 
 ### Account Address and Key
