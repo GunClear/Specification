@@ -10,6 +10,3 @@ Sections:
 3. System [State](State.md)
 4. [Transaction](Transaction.md) Details
 5. System [Components](Components.md)
-
-Appendices:
-* Data Structures and Types
