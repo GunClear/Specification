@@ -9,7 +9,8 @@ The GunClear system is made up of 3 principle actors:
 
 The network operators (the "Operators") are in charge of managing the Gunero network by proposing and mining
 blocks via the [consensus](Consensus.md) mechanism. They are also in charge of  updating the rootchain contract
-with state entry updates. Their goal is to drive the network towards consensus and transaction finality.
+with state entry updates. Their goal is to drive the network towards consensus and transaction finality. They
+also have the ability to reassign the GunClear Authority in case there is an abuse of Authority's power.
 
 ## GunClear Authority
 
