@@ -82,25 +82,25 @@ to send a token to yourself as an additional obfuscation measure, since the tran
 this would disassociate the transaction from the previous one (between you and another party).
 This is a recommended practice, but not required.
 
-For two users `a` and `b`, the following transactions (->) are possible (for a given token `T`):
+For two users `a` and `b`, the following transactions (=>) are possible (for a given token `T`):
 
 | order of transfers | use case |
 | ----- | --- |
-| `a` -> `b` | normal transaction |
-| `a` -> `a` | obfuscation |
-| `a` -> `b` -> `a` | returns, re-purchases, other mistakes, etc. |
-| `a` -> `a` -> `b` | obfuscation then transfer |
-| `a` -> `b` -> `b` | transfer then obfuscation |
-| `a` -> `a` -> `b` -> `b` | obfuscation then transfer then obfuscation |
-| `a` -> `b` -> `b` -> `a` | transfer then obfuscation then return |
-| `a` -> `a` -> `b` -> `b` -> `a` | technically possible, a subsequent `a` -> `a` would not be however |
+| `a` => `b` | normal transaction |
+| `a` => `a` | obfuscation |
+| `a` => `b` => `a` | returns, re-purchases, other mistakes, etc. |
+| `a` => `a` => `b` | obfuscation then transfer |
+| `a` => `b` => `b` | transfer then obfuscation |
+| `a` => `a` => `b` => `b` | obfuscation then transfer then obfuscation |
+| `a` => `b` => `b` => `a` | transfer then obfuscation then return |
+| `a` => `a` => `b` => `b` => `a` | technically possible, a subsequent `a` => `a` would not be however |
 
 The following are disallowed:
 
 | order of transfers | reasoning |
 | ----- | --- |
-| `a` -> `b` -> `a` -> `b` | hot potato, this would generate the same txn hash as the 1st transfer in the 3rd. It would therefore be possible to re-do the `a` -> `b` transfer since `a` has all information to re-commit the transaction. |
-| `a` -> `b` then `a` -> `c` | this is a double spend! |
+| `a` => `b` => `a` => `b` | hot potato, this would generate the same txn hash as the 1st transfer in the 3rd. It would therefore be possible to re-do the `a` => `b` transfer since `a` has all information to re-commit the transaction. |
+| `a` => `b` then `a` => `c` | this is a double spend! |
 
 All clients will reject transitions of the following nature, which may require storing the `n-1` transaction hash for a given token that changed ownership 1 or more times within a given Plasma cycle.
 
