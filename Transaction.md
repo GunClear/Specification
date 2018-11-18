@@ -17,6 +17,8 @@ Ethereum account address `A_account`, and the status is at the leaf.
 
 Represented as: `W` (`W_P` used for "previous auth root hash") and `N_account` (status of account)
 
+The auth root hash `W` is only updated once per Plasma Cycle.
+
 ### Authorization Merkle Path
 The root hash of a merkle tree can be used to generate proofs of inclusion. This is done by providing
 a list of sibling nodes that traverse up the tree. The proof starts at the leaf, which is first hashed
@@ -71,6 +73,36 @@ This hash is computed as follows:
 ```
 txn = hash(A_S + s_R + T + W)
 ```
+
+Due to the structure of the transaction hash, there is a limit to the token movements possible within a given
+Plasma synchronization cycle. The reason why this occurs is because of the time-sensitive parameter `W`,
+which is updated only once per cycle, which timebounds a transaction to within a given cycle to ensure the
+authorization proof does not have to be recomputed more than necessary. It should be noted that it is possible
+to send a token to yourself as an additional obfuscation measure, since the transactions are completely secret
+this would disassociate the transaction from the previous one (between you and another party).
+This is a recommended practice, but not required.
+
+For two users `a` and `b`, the following transactions (->) are possible (for a given token `T`):
+
+| order of transfers | use case |
+| ----- | --- |
+| `a` -> `b` | normal transaction |
+| `a` -> `a` | obfuscation |
+| `a` -> `b` -> `a` | returns, re-purchases, other mistakes, etc. |
+| `a` -> `a` -> `b` | obfuscation then transfer |
+| `a` -> `b` -> `b` | transfer then obfuscation |
+| `a` -> `a` -> `b` -> `b` | obfuscation then transfer then obfuscation |
+| `a` -> `b` -> `b` -> `a` | transfer then obfuscation then return |
+| `a` -> `a` -> `b` -> `b` -> `a` | technically possible, a subsequent `a` -> `a` would not be however |
+
+The following are disallowed:
+
+| order of transfers | reasoning |
+| ----- | --- |
+| `a` -> `b` -> `a` -> `b` | hot potato, this would generate the same txn hash as the 1st transfer in the 3rd. It would therefore be possible to re-do the `a` -> `b` transfer since `a` has all information to re-commit the transaction. |
+| `a` -> `b` then `a` -> `c` | this is a double spend! |
+
+All clients will reject transitions of the following nature, which may require storing the `n-1` transaction hash for a given token that changed ownership 1 or more times within a given Plasma cycle.
 
 ---
 
