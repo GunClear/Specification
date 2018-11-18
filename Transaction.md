@@ -66,16 +66,16 @@ T = hash(F + j)
 ```
 where `F` is the firearm's serial number, in a standardized numerical format (which may be pre-processed)
 
-### Transaction Hash
-The transaction hash is what the Gunero operators use to track the current state of ownership of a given firearm token.
+### Transaction Lock
+The transaction Lock is what the Gunero operators use to track the current state of ownership of a given firearm token.
 It is used as a commitment/nullifier in a similar fashion to Zcash; however, since we do not have a need to perform
 join-split transactions, we were able to reduce it to a single spending commitment based on the owner's private key.
 
-Represented as: `txn` (`txn_P` is used for previous)
+Represented as: `L` (`L_P` is used for previous)
 
 This hash is computed as follows:
 ```
-txn = hash(A_S + s_R + T + W)
+L = hash(A_S + s_R + T + W)
 ```
 
 Due to the structure of the transaction hash, there is a limit to the token movements possible within a given
@@ -103,7 +103,7 @@ The following are disallowed:
 
 | order of transfers | reasoning |
 | ----- | --- |
-| `a` => `b` => `a` => `b` | hot potato, this would generate the same txn hash as the 1st transfer in the 3rd. It would therefore be possible to re-do the `a` => `b` transfer since `a` has all information to re-commit the transaction. |
+| `a` => `b` => `a` => `b` | hot potato, this would generate the same lock as the 1st transfer in the 3rd. It would therefore be possible to re-do the `a` => `b` transfer since `a` has all information to re-commit the transaction. |
 | `a` => `b` then `a` => `c` | this is a double spend! |
 
 All clients will reject transitions of the following nature, which may require storing the `n-1` transaction hash for a given token that changed ownership 1 or more times within a given Plasma cycle.
@@ -144,7 +144,7 @@ The "account view hash" validates that this proof is consistent with the others 
 * Token UID (`T`)
 * Sender Account View Hash (`V_S`)
 * Receiver Account View Hash (`V_R`)
-* Current Transaction Hash (`txn`)
+* Current Transaction Hash (`L`)
 
 #### Private Parameters
 * Receiver Private Key (`s_R`)
@@ -159,7 +159,7 @@ The "account view hash" validates that this proof is consistent with the others 
 2. Validate `V_S == hash(A_S + W + r_S)` (View Hash is consistent for Sender)
 3. Validate `V_R == hash(A_R + W + r_R)` (View Hash is consistent for Receiver)
 4. Validate `T == hash(F + j)` (Both parties know the serial number)
-5. Validate `txn == hash(A_S + s_R + T + W)` (The send proof is consistent, not forged)
+5. Validate `L == hash(A_S + s_R + T + W)` (The send proof is consistent, not forged)
 
 ### Transaction Send Proof (Sender Generates)
 With this proof, we are validating that the sender of the token is accepting that this
@@ -173,7 +173,7 @@ unauthorized release of the token to a party not covered in the transaction.
 * Token UID (`T`)
 * Sender Account View Hash (`V_S`)
 * Receiver Account View Hash (`V_R`)
-* Previous Transaction Hash (`txn_P`)
+* Previous Transaction Hash (`L_P`)
 
 #### Private Parameters
 * Sender Private Key (`s_S`)
@@ -186,7 +186,7 @@ unauthorized release of the token to a party not covered in the transaction.
 1. Obtain `A_S` from `s_S` through EDCSA operations
 2. Validate `V_S == hash(A_S + W + r_S)` (View Hash is consistent for Sender)
 3. Validate `V_R == hash(A_R + W + r_R)` (View Hash is consistent for Receiver)
-4. Validate `txn_P == hash(A_PS + s_S + T + W_P)` (The send proof is valid, sender owns token)
+4. Validate `L_P == hash(A_PS + s_S + T + W_P)` (The send proof is valid, sender owns token)
 
 ---
 
@@ -215,7 +215,7 @@ The receiver must share the following with the sender:
 #### Provided with Transaction
 This is the structure of the transaction communicated over the network:
 * Token UID (`T`)
-* Current Transaction Hash (`txn`)
+* Current Transaction Hash (`L`)
 * Sender Account View Hash (`V_S`)
 * Receiver Account View Hash (`V_R`)
 * Sender Account Status (`N_S`)
@@ -228,7 +228,7 @@ This is the structure of the transaction communicated over the network:
 #### Known Environment Parameters
 The network operators and all other parties will know the following information,
 given the information provided along with a transaction:
-* Previous Transaction Hash (`txn_P`)
+* Previous Transaction Hash (`L_P`)
 * Current Authorization Root Hash (`W`)
 
 ---
@@ -246,7 +246,7 @@ The steps are:
 7. Sender validates Reciever's receivership proof
 8. Sender generates ownership transfer proof (wait...)
 9. Sender broadcasts transaction data over network
-10. Sender and Receiver wait for txn hash (leaf of state tree) to be update for token id
+10. Sender and Receiver wait for lock (leaf of state tree) to be updated for token id
 
 The transaction is considered "accepted" at this point in that it cannot be reverted
 assuming that the network operators do their jobs and properly synchronize the transaction
