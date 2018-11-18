@@ -6,10 +6,11 @@ trusted set of signers to propose and mine new blocks in a round-robin-style vot
 This consensus mechanism ensures scalable and reliable chain operation, and the timely acceptance
 of transactions. This mechanism has been proven in practice on several Ethereum test networks.
 
-The set of signers is managed via an [Operator Registry](Components.md) contract on the Ethereum
-main chain. Anyone can apply to become an Operator by staking a bond and registering with the
-pool. This registration can be removed at any time until it is confirmed. Once confirmed, all
-Operators are expected to perform the duty of securing the network, and their stake joins the
+The set of signers is managed via an
+[Operator Registry](https://github.com/GunClear/PlasmaRifle/wiki/Operator-Registry) contract on
+the Ethereum main chain. Anyone can apply to become an Operator by staking a bond and registering
+with the pool. This registration can be removed at any time until it is confirmed. Once confirmed,
+all Operators are expected to perform the duty of securing the network, and their stake joins the
 bond pool that the Plasma dispute mechanism is incentivized with.
 
 The Operators can also propose a vote to remove one of the authorized signers if they are not
