@@ -26,7 +26,7 @@ the Authority to continue their admininstration of the network, making it strong
 Firearm Owners (aka "Members") are the end-users of the GunClear system. They exchange firearm ownership tokens
 with each other, and rely on the Operators to facilitate the acceptance of those transactions. They also have
 the duty to ensure that the Operators are performing their duties correctly and in a timely manner. They have
-the ability to dispute the transaction history the operators upload through the [Plasma](Components.md) dispute
+the ability to dispute the transaction history the operators upload through the [Plasma](Components.md#plasmarifle) dispute
 mechanism, and may earn an incentive for doing so. Finally, they ultimately exercise control over the network
 by organizing and participating in a network upgrades. They can elect a new Authority and group of Operators
 if the current ones are violating the trust of the network, ensuring that these parties act in accordance to
