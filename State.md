@@ -44,6 +44,8 @@ to a new owner without ever sharing personally identifiable information inside a
 
 ---
 
+# Your Privacy
+
 These two pieces of information, the psuedo-anonymous account identifier that allows you to show your "Membership
 Card" and the Token representing your firearm, are the only two pieces of information that are visible to anyone watching.
 Both are encrypted pieces of data that are secured on the Member's device using a secret key that is never shared with
