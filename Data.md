@@ -1,4 +1,4 @@
-# System State
+# Data Privacy
 
 The GunClear system manages several critical pieces of data representing digital ownership in our system.
 "Ownership" is a controversial word to use in this context, because the leaking of this critical data gives
@@ -41,6 +41,15 @@ When you provide us with this encrypted identifier, you also provide us with a "
 that we use when moving the Token to our Gunero trading network, ensuring your privacy as your identity
 never makes a public transaction. This lock is used in a transaction to ensure the current owner can trade
 to a new owner without ever sharing personally identifiable information inside a transaction.
+
+It is relevant to note that this process is only conducted once. Once the Token has been created, it can be
+traded without ever having to re-authorize it, as every trade is conducted between two qualified individuals
+that present their Membership Cards, and convince the rest of the network to accept their trade. Every firearm
+traded using our network has a chain of ownership back to when the Token was created, meaning there is a private
+but verifiable chain of transactions between GunClear members were the Firearm has been in "good hands" the entire
+way. In fact, if the Token were originally created at the first point of sale, it is possible to validate the
+entire ownership history back to the point of origin, no many how many GunClear Members have owned it.
+All without tracking anyone's identity!
 
 ---
 
