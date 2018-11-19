@@ -1,4 +1,4 @@
-# Data Privacy
+# Handling Your Data
 
 The GunClear system manages several critical pieces of data representing digital ownership in our system.
 "Ownership" is a controversial word to use in this context, because the leaking of this critical data gives
