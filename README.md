@@ -7,6 +7,6 @@ with the project to build their own implementation of the system.
 Sections:
 1. System [Actors](Actors.md)
 2. Network [Consensus](Consensus.md)
-3. System [State](State.md)
+3. Member [Data](Data.md)
 4. [Transaction](Transaction.md) Details
 5. System [Components](Components.md)
